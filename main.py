@@ -19,11 +19,11 @@ class Chromosome():
         return [x**2 for x in decoded_values]
 
 if __name__=='__main__':
-    POPULATION_SIZE = 10
-    CHROMOSOME_LENGTH = 5
+    Population_Size = 10
+    Chromosome_Length = 5
 
     chromosomes=Chromosome()
-    chromosomes.initialize_population(POPULATION_SIZE,CHROMOSOME_LENGTH)
+    chromosomes.initialize_population(Population_Size,Chromosome_Length)
 
     print("Initial Population:")
     for chromosome in chromosomes.population:
