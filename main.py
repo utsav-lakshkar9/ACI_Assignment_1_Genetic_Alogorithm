@@ -1,4 +1,6 @@
 import random
+import socket
+import datetime
 
 class Chromosome():
     def __init__(self):
@@ -19,6 +21,10 @@ class Chromosome():
         return [x**2 for x in decoded_values]
 
 if __name__=='__main__':
+    
+    print("Execution Timestamp:", datetime.datetime.now())
+    print("Virtual Machine ID / Hostname:", socket.gethostname())
+    
     Population_Size = 10
     Chromosome_Length = 5
 
