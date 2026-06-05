@@ -250,7 +250,8 @@ def run_ga(pop_size1=10,chromosome_length1=5,pc1=0.8,pm1=0.01,generations1=50,se
     with open('output_GA.txt', 'w') as out:
         
         def log(line=""):
-            print(line)        
+            print(line)  
+            print(line, file=out)      
             
         best_history = []
         avg_history = []
