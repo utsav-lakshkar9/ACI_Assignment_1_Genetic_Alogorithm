@@ -52,7 +52,7 @@ def decode(chromosome):
     return int(chromosome, 2)
 
 def fitness(x):
-    return x ** 2
+    return x**2
 
 
 # ========== Population Initialization ==========
@@ -234,7 +234,7 @@ def plot_fitness_separate(best_history, avg_history):
 def run_ga(pop_size1=10,chromosome_length1=5,pc1=0.8,pm1=0.01,generations1=50,seed=42):
 
     pop_size=10
-    chrom_length=5
+    chromosome_length=5
     pc=0.8
     pm=0.01
     generations=50
@@ -279,7 +279,6 @@ def run_ga(pop_size1=10,chromosome_length1=5,pc1=0.8,pm1=0.01,generations1=50,se
         fitness_values, best_ch, best_fit, avg_fit, decoded = evaluate_population(population)
         best_history.append(best_fit)
         avg_history.append(avg_fit)
-
 
     # Final info
     log("")
