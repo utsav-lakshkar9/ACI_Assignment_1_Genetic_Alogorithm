@@ -247,51 +247,54 @@ def run_ga(pop_size1=10,chromosome_length1=5,pc1=0.8,pm1=0.01,generations1=50,se
     
     random.seed(seed)
     
-    def log(line=""):
-        print(line)        
+    with open('output_GA.txt', 'w') as out:
         
-    best_history = []
-    avg_history = []
+        def log(line=""):
+            print(line)        
+            
+        best_history = []
+        avg_history = []
 
-    # Generation 0
-    fitness_values, best_ch, best_fit, avg_fit, decoded = evaluate_population(population)
-    best_history.append(best_fit)
-    avg_history.append(avg_fit)
-    
-    log("Generation 0")
-    log("-" * 60)
-    log(f"{'Chromosome':>10} {'Decimal(x)':>12} {'Fitness f(x)=x^2':>18}")
-    log("-" * 60)
-    for ch, x, f in zip(population.as_list(), decoded, fitness_values):
-        log(f"{ch:>10} {x:>12} {f:>18}")
-    log("-" * 60)
-    log(f"Best Chromosome: {best_ch}")
-    log(f"Best Fitness: {best_fit}")
-    log(f"Average Fitness: {avg_fit:.2f}")
-    log("-" * 60)
-
-    for _ in range(generations):                
-        mating_pool = select_mating_pool(population,fitness_values)
-        offspring = apply_crossover(mating_pool,pc)
-        offspring = apply_mutation(offspring,pm)
-        population = apply_elitism(population,fitness_values,offspring)
-
+        # Generation 0
         fitness_values, best_ch, best_fit, avg_fit, decoded = evaluate_population(population)
         best_history.append(best_fit)
         avg_history.append(avg_fit)
+        
+        log("Generation 0")
+        log("-" * 60)
+        log(f"{'Chromosome':>10} {'Decimal(x)':>12} {'Fitness f(x)=x^2':>18}")
+        log("-" * 60)
+        for ch, x, f in zip(population.as_list(), decoded, fitness_values):
+            log(f"{ch:>10} {x:>12} {f:>18}")
+        log("-" * 60)
+        log(f"Best Chromosome: {best_ch}")
+        log(f"Best Fitness: {best_fit}")
+        log(f"Average Fitness: {avg_fit:.2f}")
+        log("-" * 60)
 
-    # Final info
-    log("")
-    log(f"After {generations} Generations")
-    log("-" * 60)
-    log(f"Best Chromosome: {best_ch}")
-    x_best = decode(best_ch)
-    log(f"Decoded Value (x): {x_best}")
-    log(f"Maximum Fitness: {best_fit}")
-    log("")
-    log("Final Population Sample:")
-    for ch in population.as_list():
-        log(ch)            
+        for _ in range(generations):                
+            mating_pool = select_mating_pool(population,fitness_values)
+            offspring = apply_crossover(mating_pool,pc)
+            offspring = apply_mutation(offspring,pm)
+            population = apply_elitism(population,fitness_values,offspring)
+
+            fitness_values, best_ch, best_fit, avg_fit, decoded = evaluate_population(population)
+            best_history.append(best_fit)
+            avg_history.append(avg_fit)
+
+        # Final info
+        log("")
+        log(f"After {generations} Generations")
+        log("-" * 60)
+        log(f"Best Chromosome: {best_ch}")
+        x_best = decode(best_ch)
+        log(f"Decoded Value (x): {x_best}")
+        log(f"Maximum Fitness: {best_fit}")
+        log("")
+        log("Final Population Sample:")
+        for ch in population.as_list():
+            log(ch)            
+            
     plot_fitness_separate(best_history, avg_history)
     return population
 
