@@ -5,6 +5,7 @@
 Implement a Genetic Algorithm to maximize the following function:
 f(x)=x^2
 where: 0≤x≤31
+
 Represent z using a 5-bit binary chromosome.
 
 **Requirements**
