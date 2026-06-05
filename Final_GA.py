@@ -57,36 +57,73 @@ def fitness(x):
 
 # ========== Population Initialization ==========
 
-def initialize_population(pop_size=10, chrom_length=5,pc=0.8,pm=0.01,generations=50,seed=42):
-    population = Population(pop_size)
-        
+def random_initialization():
     pop_size1=10
     chrom_length1=5
     pc1=0.8
     pm1=0.01
     generations1=50
+    population = Population(pop_size1)
     
-    # Basic parameter validation
-    try:
-        pop_size1 = int(pop_size)
-        chrom_length1 = int(chrom_length)
-        pc1 = float(pc)
-        pm1 = float(pm)
-        generations1 = int(generations)
-        
-    except (KeyError, ValueError) as e:
-        raise ValueError(f"Invalid or missing parameter in input values: {e}")
-
-    if pop_size1 <= 0 or chrom_length1 <= 0 or generations1 <= 0:
-        raise ValueError("Population size, chromosome length, and generations must be positive.")
-    if not (0.0 < pc1 <= 1.0) or not (0.0 <= pm1 <= 1.0):
-        raise ValueError("Pc must be in (0,1], Pm must be in [0,1].")
-
     for _ in range(pop_size1):
         chromosome = ''.join(random.choice(['0', '1']) for _ in range(chrom_length1))
         population.insert(chromosome)
-    
+        
     return pop_size1, chrom_length1, pc1, pm1, generations1, population
+
+def initialize_population(filename='inputPS16.txt'):    
+    
+    with open(filename, 'r') as f:
+        lines = [line.strip() for line in f if line.strip()]
+
+    params = {}
+    initial_population = []
+
+    i = 0
+    # Read parameter lines until "Initial Population:"
+    while i < len(lines):
+        line = lines[i]
+        if line.lower().startswith('initial population'):
+            i += 1
+            break
+        if '=' in line:
+            key, value = line.split('=', 1)
+            params[key.strip().lower()] = value.strip()
+        i += 1
+
+    # Basic parameter validation
+    try:
+        pop_size = int(params['population size'])
+        chrom_length = int(params['chromosome length'])
+        pc = float(params.get('pc', '0.8'))
+        pm = float(params.get('pm', '0.01'))
+        generations = int(params.get('generations', '50'))
+    except (KeyError, ValueError) as e:
+        raise ValueError(f"Invalid or missing parameter in input file: {e}")
+
+    if pop_size <= 0 or chrom_length <= 0 or generations <= 0:
+        raise ValueError("Population size, chromosome length, and generations must be positive.")
+    if not (0.0 < pc <= 1.0) or not (0.0 <= pm <= 1.0):
+        raise ValueError("Pc must be in (0,1], Pm must be in [0,1].")
+
+    # Read initial population into list
+    for j in range(pop_size):
+        if i + j >= len(lines):
+            raise ValueError("Not enough chromosomes in initial population section.")
+        chrom = lines[i + j]
+        if len(chrom) != chrom_length or any(c not in '01' for c in chrom):
+            raise ValueError(f"Invalid chromosome '{chrom}' in input file.")
+        initial_population.append(chrom)
+
+    # Build Population object and demonstrate insert capacity check
+    population = Population(max_size=pop_size)
+    for chrom in initial_population:
+        inserted = population.insert(chrom)
+        if not inserted:
+            # This should not happen if input is correct
+            print("Warning: chromosome not inserted due to capacity limit.")
+    
+    return pop_size, chrom_length, pc, pm, generations, population
 
 # ========== Evaluation ==========
 
@@ -243,7 +280,7 @@ def run_ga(pop_size1=10,chromosome_length1=5,pc1=0.8,pm1=0.01,generations1=50,se
         pop_size,chromosome_length,pc,pm,generations,population = initialize_population(pop_size1,chromosome_length1,pc1,pm1,generations1)
     except Exception as e:
         print(f"Error reading input file: {e}")
-        return None, None, None
+        pop_size,chromosome_length,pc,pm,generations,population = random_initialization(pop_size1)
     
     random.seed(seed)
     
