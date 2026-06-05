@@ -268,7 +268,7 @@ def plot_fitness_separate(best_history, avg_history):
 
 # ========== GA Driver ==========
 
-def run_ga(pop_size1=10,chromosome_length1=5,pc1=0.8,pm1=0.01,generations1=50,seed=42):
+def run_ga(filename,seed=42):
 
     pop_size=10
     chromosome_length=5
@@ -277,10 +277,10 @@ def run_ga(pop_size1=10,chromosome_length1=5,pc1=0.8,pm1=0.01,generations1=50,se
     generations=50
     
     try:
-        pop_size,chromosome_length,pc,pm,generations,population = initialize_population(pop_size1,chromosome_length1,pc1,pm1,generations1)
+        pop_size,chromosome_length,pc,pm,generations,population = initialize_population(filename)
     except Exception as e:
         print(f"Error reading input file: {e}")
-        pop_size,chromosome_length,pc,pm,generations,population = random_initialization(pop_size1)
+        pop_size,chromosome_length,pc,pm,generations,population = random_initialization()
     
     random.seed(seed)
     
@@ -339,4 +339,4 @@ def run_ga(pop_size1=10,chromosome_length1=5,pc1=0.8,pm1=0.01,generations1=50,se
 if __name__ == "__main__":
     print("Execution Timestamp:", datetime.datetime.now())
     print("Virtual Machine ID / Hostname:", socket.gethostname())
-    run_ga(10,5,0.8,0.01,50,42)
+    run_ga('inputPS16.txt')
