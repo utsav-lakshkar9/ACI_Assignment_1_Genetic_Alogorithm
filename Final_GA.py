@@ -58,18 +58,18 @@ def fitness(x):
 # ========== Population Initialization ==========
 
 def random_initialization():
-    pop_size1=10
-    chrom_length1=5
-    pc1=0.8
-    pm1=0.01
-    generations1=50
-    population = Population(pop_size1)
+    pop_size=10
+    chrom_length=5
+    pc=0.8
+    pm=0.01
+    generations=50
+    population = Population(pop_size)
     
-    for _ in range(pop_size1):
-        chromosome = ''.join(random.choice(['0', '1']) for _ in range(chrom_length1))
+    for _ in range(pop_size):
+        chromosome = ''.join(random.choice(['0', '1']) for _ in range(chrom_length))
         population.insert(chromosome)
         
-    return pop_size1, chrom_length1, pc1, pm1, generations1, population
+    return pop_size, chrom_length, pc, pm, generations, population
 
 def initialize_population(filename='inputPS16.txt'):    
     
